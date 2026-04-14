@@ -1,0 +1,6 @@
+# 環境変数（APIキーなどの機密情報）
+.env
+
+# Node.js
+node_modules/
+npm-debug.log*

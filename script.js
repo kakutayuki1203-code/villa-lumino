@@ -222,24 +222,9 @@ const i18n = {
 };
 
 /* ===================================
-   チャットボット自動応答テキスト
+   会話履歴（Claude APIに送るメッセージ配列）
    =================================== */
-const botReplies = {
-  ja: {
-    reserve: 'ご予約は、フォームのほかお電話（000-0000-0000）でも承っています。\nご希望の日程はいつ頃をお考えでしょうか？😊',
-    facility:'プライベートプール・屋外ジャクジー・プライベートサウナ・バスルーム完備です。\n全棟インターネット無料・朝食付きプランもございます🌿',
-    anniv:   '記念日のご相談、喜んでお受けします！\nお花のアレンジ・ケーキの手配・サプライズ演出など、どうぞお気軽に。\n具体的なご希望をお聞かせください🥂',
-    access:  '最寄り駅からの送迎をご用意しております（要事前予約）。\n空港からの専用送迎もご手配可能です。詳しくはアクセスセクションをご確認ください🚗',
-    default: 'ありがとうございます。\n担当コンシェルジュより折り返しご連絡いたします。\n他にご質問はございますか？',
-  },
-  en: {
-    reserve: 'You can reserve via the form or call us at 000-0000-0000.\nWhat dates are you considering? 😊',
-    facility:'Each villa features a private pool, outdoor jacuzzi, private sauna, and full bath.\nFree Wi-Fi and breakfast plans are available 🌿',
-    anniv:   'We love helping with anniversary surprises!\nFloral arrangements, cake orders, surprise setups — just let us know.\nWhat did you have in mind? 🥂',
-    access:  'We offer shuttle service from the nearest station (reservation required).\nPrivate airport transfers are also available. See the Access section for details 🚗',
-    default: 'Thank you!\nOur concierge team will follow up with you shortly.\nIs there anything else I can help with?',
-  }
-};
+let conversationHistory = [];
 
 /* ===================================
    状態管理
@@ -351,35 +336,145 @@ chatFab.addEventListener('click', () => {
   if (chatOpen) chatInput.focus();
 });
 
+/* マークダウンの簡易変換（太字・リスト・水平線・改行） */
+function mdToHtml(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')   /* **太字** */
+    .replace(/^---+$/gm, '<hr>')                          /* --- 水平線 */
+    .replace(/^[-・]\s+(.+)$/gm, '<li>$1</li>')          /* - リスト */
+    .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')           /* ulでラップ */
+    .replace(/\n/g, '<br>');                              /* 改行 */
+}
+
 /* メッセージを追加 */
 function addMsg(text, type = 'bot') {
   const div = document.createElement('div');
   div.className = `msg ${type}`;
-  div.innerHTML = `<div class="msg__bubble">${text.replace(/\n/g, '<br>')}</div>`;
+  const content = type === 'bot' ? mdToHtml(text) : text.replace(/\n/g, '<br>');
+  div.innerHTML = `<div class="msg__bubble">${content}</div>`;
   chatMsgs.appendChild(div);
   chatMsgs.scrollTop = chatMsgs.scrollHeight;
 }
 
-/* ボットの返答を取得 */
-function getBotReply(input) {
-  const t = input.toLowerCase();
-  const r = botReplies[currentLang];
-  if (/予約|reserve|book|料金|price/.test(t))    return r.reserve;
-  if (/施設|アメニティ|facility|amenity|pool|プール|spa|サウナ/.test(t)) return r.facility;
-  if (/記念|anniversary|サプライズ|surprise|誕生/.test(t)) return r.anniv;
-  if (/アクセス|access|交通|電車|車|airport|送迎/.test(t)) return r.access;
-  return r.default;
+/* タイピングインジケーターを追加・削除 */
+function addTypingIndicator() {
+  const div = document.createElement('div');
+  div.className = 'msg bot typing-indicator';
+  div.id = 'typingIndicator';
+  div.innerHTML = `<div class="msg__bubble"><span></span><span></span><span></span></div>`;
+  chatMsgs.appendChild(div);
+  chatMsgs.scrollTop = chatMsgs.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  const el = document.getElementById('typingIndicator');
+  if (el) el.remove();
+}
+
+/* Claude API にメッセージを送信しストリーミングで受信 */
+async function sendToClaudeAPI(userText) {
+  /* 会話履歴にユーザーメッセージを追加 */
+  conversationHistory.push({ role: 'user', content: userText });
+
+  /* タイピングインジケーター表示 */
+  addTypingIndicator();
+
+  /* ストリーミング中のボットバブルを作成（逐次テキストを挿入） */
+  let botBubble = null;
+  let fullText  = '';
+
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: conversationHistory }),
+    });
+
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const reader  = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer    = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+
+      /* SSEの行ごとに処理 */
+      const lines = buffer.split('\n');
+      buffer = lines.pop(); /* 未完了の行をバッファに残す */
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const payload = line.slice(6).trim();
+        if (payload === '[DONE]') break;
+
+        try {
+          const parsed = JSON.parse(payload);
+
+          /* エラーメッセージの場合 */
+          if (parsed.error) {
+            removeTypingIndicator();
+            addMsg(parsed.error, 'bot');
+            return;
+          }
+
+          /* 最初のテキストが来たらタイピング削除してバブルを生成 */
+          if (parsed.text) {
+            if (!botBubble) {
+              removeTypingIndicator();
+              const div = document.createElement('div');
+              div.className = 'msg bot';
+              div.innerHTML = `<div class="msg__bubble"></div>`;
+              chatMsgs.appendChild(div);
+              botBubble = div.querySelector('.msg__bubble');
+            }
+            fullText += parsed.text;
+            /* マークダウン変換して逐次表示 */
+            botBubble.innerHTML = mdToHtml(fullText);
+            chatMsgs.scrollTop = chatMsgs.scrollHeight;
+          }
+        } catch (_) {
+          /* JSON パースエラーは無視 */
+        }
+      }
+    }
+
+    /* 会話履歴にアシスタントの返答を追加 */
+    if (fullText) {
+      conversationHistory.push({ role: 'assistant', content: fullText });
+    }
+
+  } catch (err) {
+    console.error('チャット送信エラー:', err);
+    removeTypingIndicator();
+    const errMsg = currentLang === 'ja'
+      ? '接続エラーが発生しました。しばらくしてから再度お試しください。'
+      : 'A connection error occurred. Please try again later.';
+    addMsg(errMsg, 'bot');
+  }
 }
 
 /* 送信処理 */
+let isSending = false; /* 二重送信防止フラグ */
+
 function sendMsg() {
+  if (isSending) return;
   const text = chatInput.value.trim();
   if (!text) return;
+
   addMsg(text, 'user');
   chatInput.value = '';
+  isSending = true;
+  chatSend.disabled = true;
 
-  /* 少し遅らせてボット返答（自然な会話感） */
-  setTimeout(() => addMsg(getBotReply(text), 'bot'), 600);
+  sendToClaudeAPI(text).finally(() => {
+    isSending = false;
+    chatSend.disabled = false;
+    chatInput.focus();
+  });
 }
 
 chatSend.addEventListener('click', sendMsg);
@@ -398,8 +493,14 @@ function updateQuickReplies() {
   `;
   quickArea.querySelectorAll('.quick-btn').forEach(btn => {
     btn.addEventListener('click', () => {
+      if (isSending) return;
       addMsg(btn.dataset.reply, 'user');
-      setTimeout(() => addMsg(getBotReply(btn.dataset.reply), 'bot'), 600);
+      isSending = true;
+      chatSend.disabled = true;
+      sendToClaudeAPI(btn.dataset.reply).finally(() => {
+        isSending = false;
+        chatSend.disabled = false;
+      });
     });
   });
 }

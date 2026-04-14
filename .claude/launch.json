@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "villa-lumino",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "3333"],
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server.js"],
       "port": 3333
     }
   ]
