@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Villa Lumino | Private Beachside Villa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Noto+Sans+JP:wght@300;400;600;700&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===================================
+       ナビゲーション
+       =================================== -->
+  <nav class="nav" id="nav">
+    <div class="container">
+      <div class="nav__inner">
+
+        <!-- ロゴ -->
+        <a href="#hero" class="nav__logo">
+          <span class="nav__logo-en">Villa Lumino</span>
+          <span class="nav__logo-ja">ヴィラ ルミノ</span>
+        </a>
+
+        <!-- デスクトップメニュー -->
+        <ul class="nav__menu">
+          <li><a href="#features" class="nav__link" data-i18n="nav_rooms">お部屋</a></li>
+          <li><a href="#gallery"  class="nav__link" data-i18n="nav_amenity">アメニティ</a></li>
+          <li><a href="#about"   class="nav__link" data-i18n="nav_about">ヴィラについて</a></li>
+          <li><a href="#access"  class="nav__link" data-i18n="nav_access">アクセス</a></li>
+        </ul>
+
+        <!-- 右側コントロール -->
+        <div class="nav__controls">
+          <!-- 言語切替 -->
+          <div class="nav__lang">
+            <button class="lang-btn active" data-lang="ja">JP</button>
+            <span style="color:var(--border-light)">/</span>
+            <button class="lang-btn" data-lang="en">EN</button>
+          </div>
+          <!-- 予約ボタン -->
+          <a href="#booking" class="btn-gold" data-i18n="nav_reserve">ご予約</a>
+          <!-- ハンバーガー（モバイル） -->
+          <button class="nav__hamburger" id="hamburger" aria-label="メニュー">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- モバイルメニュー -->
+  <div class="nav__mobile" id="mobileMenu">
+    <a href="#features" class="nav__mobile-link" data-i18n="nav_rooms">お部屋</a>
+    <a href="#gallery"  class="nav__mobile-link" data-i18n="nav_amenity">アメニティ</a>
+    <a href="#about"    class="nav__mobile-link" data-i18n="nav_about">ヴィラについて</a>
+    <a href="#access"   class="nav__mobile-link" data-i18n="nav_access">アクセス</a>
+    <a href="#booking"  class="btn-gold" data-i18n="nav_reserve">ご予約</a>
+  </div>
+
+
+  <!-- ===================================
+       ヒーロー
+       =================================== -->
+  <section class="hero" id="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__lights"></div>
+    <div class="hero__wave"></div>
+
+    <div class="container hero__content">
+      <p class="hero__tag" data-i18n="hero_tag">海辺のプライベートヴィラ</p>
+      <h1 class="hero__title">
+        <span data-i18n="hero_title_1">Escape to</span><br>
+        <em data-i18n="hero_title_2">Lumino</em>
+      </h1>
+      <p class="hero__subtitle" data-i18n="hero_sub">
+        波音と星空に包まれた、二人だけの聖域へ。<br>プライベートプール付き全室オーシャンビューヴィラ。
+      </p>
+      <div class="hero__cta">
+        <a href="#booking" class="btn-gold" data-i18n="hero_cta_1">ご予約はこちら</a>
+        <a href="#gallery"  class="btn-outline" data-i18n="hero_cta_2">ヴィラを見る</a>
+      </div>
+    </div>
+
+    <!-- スクロールインジケーター -->
+    <div class="hero__scroll">
+      <span data-i18n="hero_scroll">Scroll</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+
+  <!-- ===================================
+       フィーチャー（三大強み）
+       =================================== -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="features__header reveal">
+        <span class="section-label" data-i18n="feat_label">選ばれる理由</span>
+        <h2 class="section-title" data-i18n="feat_title">ここにしかない<br>特別な体験を</h2>
+        <p class="section-desc" data-i18n="feat_desc">三つの贅沢が、あなたの滞在を唯一無二のものにします。</p>
+      </div>
+
+      <div class="features__grid">
+        <!-- カード 1: プライベートプール -->
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-card__num">01</div>
+          <div class="feature-card__icon">🌊</div>
+          <h3 class="feature-card__title" data-i18n="feat1_title">プライベートプール</h3>
+          <p class="feature-card__en"  data-i18n="feat1_en">Private Pool</p>
+          <p class="feature-card__desc" data-i18n="feat1_desc">全室に専用インフィニティプールを完備。誰にも邪魔されない二人だけの時間を。</p>
+        </div>
+
+        <!-- カード 2: オーシャンビュー -->
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-card__num">02</div>
+          <div class="feature-card__icon">🌅</div>
+          <h3 class="feature-card__title" data-i18n="feat2_title">オーシャンビュー</h3>
+          <p class="feature-card__en"  data-i18n="feat2_en">Ocean View</p>
+          <p class="feature-card__desc" data-i18n="feat2_desc">水平線まで広がる絶景。部屋のどこにいても、海を感じられる設計。</p>
+        </div>
+
+        <!-- カード 3: スパ＆サウナ -->
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-card__num">03</div>
+          <div class="feature-card__icon">🧖</div>
+          <h3 class="feature-card__title" data-i18n="feat3_title">スパ＆サウナ</h3>
+          <p class="feature-card__en"  data-i18n="feat3_en">Spa & Sauna</p>
+          <p class="feature-card__desc" data-i18n="feat3_desc">プライベートサウナとスパでリトリート。アロマセラピーで心身をリセット。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================================
+       ギャラリー
+       =================================== -->
+  <section class="gallery" id="gallery">
+    <div class="container">
+      <div class="gallery__header reveal">
+        <span class="section-label" data-i18n="gal_label">ギャラリー</span>
+        <h2 class="section-title" data-i18n="gal_title">ヴィラの空間</h2>
+      </div>
+
+      <div class="gallery__grid reveal">
+        <div class="gallery__item" data-label="Ocean View">
+          <div class="gallery__item-inner"></div>
+        </div>
+        <div class="gallery__item" data-label="Private Pool">
+          <div class="gallery__item-inner"></div>
+        </div>
+        <div class="gallery__item" data-label="Villa Suite">
+          <div class="gallery__item-inner"></div>
+        </div>
+        <div class="gallery__item" data-label="Spa & Sauna">
+          <div class="gallery__item-inner"></div>
+        </div>
+        <div class="gallery__item" data-label="Dining">
+          <div class="gallery__item-inner"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================================
+       About
+       =================================== -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about__inner">
+
+        <!-- ビジュアル -->
+        <div class="about__visual reveal">
+          <div class="about__visual-main"></div>
+          <div class="about__visual-accent"></div>
+          <div class="about__visual-badge">
+            <div class="about__visual-badge-num">7</div>
+            <div class="about__visual-badge-label">PRIVATE VILLAS</div>
+          </div>
+        </div>
+
+        <!-- テキスト -->
+        <div class="about__content reveal reveal-delay-2">
+          <span class="section-label" data-i18n="about_label">Villa Luminoについて</span>
+          <h2 class="section-title" data-i18n="about_title">海と光が<br>織りなす場所</h2>
+          <blockquote class="about__quote" data-i18n="about_quote">"特別な日を、さらに特別な場所で。"</blockquote>
+          <p class="section-desc" data-i18n="about_desc">
+            岬の先端に佇む全7棟のプライベートヴィラ。それぞれが独立した建物として設計され、完全なプライバシーと圧倒的な開放感を両立しています。
+          </p>
+          <div class="about__stats">
+            <div>
+              <div class="about__stat-num">
+                <span data-i18n="stat1_num">7</span><span data-i18n="stat1_unit" style="font-size:18px;color:var(--gold)">棟</span>
+              </div>
+              <div class="about__stat-label" data-i18n="stat1_label">プライベートヴィラ</div>
+            </div>
+            <div>
+              <div class="about__stat-num">
+                <span data-i18n="stat2_num">24</span><span data-i18n="stat2_unit" style="font-size:18px;color:var(--gold)">h</span>
+              </div>
+              <div class="about__stat-label" data-i18n="stat2_label">コンシェルジュ対応</div>
+            </div>
+            <div>
+              <div class="about__stat-num">
+                <span data-i18n="stat3_num">∞</span>
+              </div>
+              <div class="about__stat-label" data-i18n="stat3_label">プール専有時間</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================================
+       アクセス
+       =================================== -->
+  <section class="access" id="access">
+    <div class="container">
+      <div class="access__inner">
+
+        <!-- 地図 -->
+        <div class="reveal">
+          <span class="section-label" data-i18n="acc_label">アクセス</span>
+          <h2 class="section-title" data-i18n="acc_title">来訪のご案内</h2>
+          <div class="access__map" style="margin-top:32px">
+            <div class="access__map-pin"></div>
+            <span style="margin-top:60px;font-size:11px;letter-spacing:.15em" data-i18n="acc_map_alt">MAP</span>
+          </div>
+        </div>
+
+        <!-- アクセス情報 -->
+        <div class="reveal reveal-delay-2" style="padding-top:72px">
+          <ul class="access__list">
+            <li class="access__item">
+              <div class="access__item-icon">📍</div>
+              <div>
+                <div class="access__item-label" data-i18n="acc1_label">住所</div>
+                <div class="access__item-text"  data-i18n="acc1_text">〒000-0000 ●●県●●市 海岸通り1-1</div>
+              </div>
+            </li>
+            <li class="access__item">
+              <div class="access__item-icon">🚃</div>
+              <div>
+                <div class="access__item-label" data-i18n="acc2_label">電車</div>
+                <div class="access__item-text"  data-i18n="acc2_text">●●駅より送迎あり（要事前予約）</div>
+              </div>
+            </li>
+            <li class="access__item">
+              <div class="access__item-icon">🚗</div>
+              <div>
+                <div class="access__item-label" data-i18n="acc3_label">車</div>
+                <div class="access__item-text"  data-i18n="acc3_text">●●ICより約15分</div>
+              </div>
+            </li>
+            <li class="access__item">
+              <div class="access__item-icon">✈️</div>
+              <div>
+                <div class="access__item-label" data-i18n="acc4_label">空港</div>
+                <div class="access__item-text"  data-i18n="acc4_text">●●空港より約40分（専用送迎可）</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================================
+       予約・お問い合わせ
+       =================================== -->
+  <section class="booking" id="booking">
+    <div class="container">
+      <div class="booking__inner">
+
+        <!-- 左: テキスト -->
+        <div class="reveal">
+          <span class="section-label" data-i18n="book_label">ご予約・お問い合わせ</span>
+          <h2 class="booking__title" data-i18n="book_title">特別な滞在を<br>予約する</h2>
+          <p class="section-desc" style="margin-top:20px" data-i18n="book_desc">
+            ご予約は電話・メール・フォームにて承ります。記念日・サプライズのご相談もお気軽にどうぞ。
+          </p>
+
+          <!-- 連絡先 -->
+          <div style="margin-top:40px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;align-items:center;gap:12px">
+              <span style="font-size:20px">📞</span>
+              <div>
+                <div style="font-size:11px;letter-spacing:.15em;color:var(--gold);text-transform:uppercase">Phone</div>
+                <div style="font-size:15px;color:var(--text)">000-0000-0000</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+              <span style="font-size:20px">✉️</span>
+              <div>
+                <div style="font-size:11px;letter-spacing:.15em;color:var(--gold);text-transform:uppercase">Email</div>
+                <div style="font-size:15px;color:var(--text)">info@villa-lumino.com</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右: フォーム -->
+        <div class="reveal reveal-delay-2">
+          <form class="booking__form" id="bookingForm">
+            <!-- チェックイン・アウト -->
+            <div class="form-row">
+              <div class="form-group">
+                <label data-i18n="form_checkin">チェックイン</label>
+                <input type="date">
+              </div>
+              <div class="form-group">
+                <label data-i18n="form_checkout">チェックアウト</label>
+                <input type="date">
+              </div>
+            </div>
+
+            <!-- 人数 -->
+            <div class="form-group">
+              <label data-i18n="form_guests">ご人数</label>
+              <select data-i18n-opts="form_guests_1,form_guests_2,form_guests_3,form_guests_4">
+                <option data-i18n-opt>1名</option>
+                <option data-i18n-opt selected>2名</option>
+                <option data-i18n-opt>3名</option>
+                <option data-i18n-opt>4名以上</option>
+              </select>
+            </div>
+
+            <!-- 名前・メール -->
+            <div class="form-row">
+              <div class="form-group">
+                <label data-i18n="form_name">お名前</label>
+                <input type="text" placeholder="山田 花子" data-i18n="form_ph_name" required>
+              </div>
+              <div class="form-group">
+                <label data-i18n="form_email">メールアドレス</label>
+                <input type="email" placeholder="example@email.com" required>
+              </div>
+            </div>
+
+            <!-- メッセージ -->
+            <div class="form-group">
+              <label data-i18n="form_message">ご要望・ご質問</label>
+              <textarea placeholder="記念日のサプライズ演出についてご相談したいです" data-i18n="form_ph_msg"></textarea>
+            </div>
+
+            <button type="submit" class="btn-gold" style="width:100%;justify-content:center" data-i18n="form_submit">
+              送信する
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================================
+       フッター
+       =================================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+
+        <!-- ブランド -->
+        <div>
+          <div class="footer__brand-name">Villa Lumino</div>
+          <p class="footer__brand-desc" data-i18n="ft_desc">
+            岬の先端に佇む、海辺のプライベートヴィラ。<br>二人だけの特別な時間を。
+          </p>
+          <div class="footer__sns">
+            <a href="#" class="footer__sns-link" aria-label="Instagram">IG</a>
+            <a href="#" class="footer__sns-link" aria-label="Twitter">TW</a>
+            <a href="#" class="footer__sns-link" aria-label="Facebook">FB</a>
+          </div>
+        </div>
+
+        <!-- ヴィラ -->
+        <div>
+          <div class="footer__col-title" data-i18n="ft_villa">ヴィラ</div>
+          <ul class="footer__col-list">
+            <li><a href="#features" data-i18n="ft_rooms">お部屋</a></li>
+            <li><a href="#features" data-i18n="ft_amenity">アメニティ</a></li>
+            <li><a href="#gallery"  data-i18n="ft_gallery">ギャラリー</a></li>
+            <li><a href="#"         data-i18n="ft_dining">ダイニング</a></li>
+          </ul>
+        </div>
+
+        <!-- インフォメーション -->
+        <div>
+          <div class="footer__col-title" data-i18n="ft_info">インフォメーション</div>
+          <ul class="footer__col-list">
+            <li><a href="#access"  data-i18n="ft_access">アクセス</a></li>
+            <li><a href="#"        data-i18n="ft_faq">よくある質問</a></li>
+            <li><a href="#"        data-i18n="ft_privacy">プライバシー</a></li>
+            <li><a href="#"        data-i18n="ft_cancel">キャンセルポリシー</a></li>
+          </ul>
+        </div>
+
+        <!-- お問い合わせ -->
+        <div>
+          <div class="footer__col-title" data-i18n="ft_contact">お問い合わせ</div>
+          <ul class="footer__col-list">
+            <li><a href="#booking" data-i18n="ft_reserve">予約・問い合わせ</a></li>
+            <li><a href="#">000-0000-0000</a></li>
+            <li><a href="#">info@villa-lumino.com</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- コピーライト -->
+      <div class="footer__bottom">
+        <p class="footer__copy" data-i18n="ft_copy">© 2026 Villa Lumino. All rights reserved.</p>
+        <div class="nav__lang">
+          <button class="lang-btn active" data-lang="ja">JP</button>
+          <span style="color:var(--border-light)">/</span>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ===================================
+       チャットボット
+       =================================== -->
+  <!-- FABボタン -->
+  <button class="chat-fab" id="chatFab" aria-label="チャット">
+    <span class="chat-fab__icon">💬</span>
+  </button>
+
+  <!-- チャットウィンドウ -->
+  <div class="chat-window" id="chatWindow" role="dialog" aria-label="チャットボット">
+
+    <!-- ヘッダー -->
+    <div class="chat-header">
+      <div class="chat-header__avatar">✨</div>
+      <div>
+        <div class="chat-header__name"  data-i18n="chat_name">Lumino コンシェルジュ</div>
+        <div class="chat-header__status" data-i18n="chat_status">オンライン — 24時間対応</div>
+      </div>
+    </div>
+
+    <!-- メッセージエリア -->
+    <div class="chat-messages" id="chatMessages">
+      <!-- 初期グリーティングメッセージ -->
+      <div class="msg bot">
+        <div class="msg__bubble" data-i18n="chat_greet">
+          こんにちは！Villa Lumino コンシェルジュです🌊<br>ご予約・施設のご案内・記念日プランなど、何でもお気軽にどうぞ。
+        </div>
+      </div>
+    </div>
+
+    <!-- クイック返信 -->
+    <div class="chat-quickreplies" id="quickReplies"></div>
+
+    <!-- 入力エリア -->
+    <div class="chat-input">
+      <input
+        type="text"
+        id="chatInput"
+        placeholder="メッセージを入力…"
+        data-i18n="chat_input_ph"
+        autocomplete="off"
+      >
+      <button class="chat-send" id="chatSend" aria-label="送信">➤</button>
+    </div>
+
+  </div>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
